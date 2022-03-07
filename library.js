@@ -62,19 +62,15 @@ function IsPrime(n) {
 /**
  * Return all prime numbers up to a limit.
  *
- * @param  {Number} limit   The largest number to check is prime.
- * @return {primes}         An array of all primes under the limit.
+ * @param  {Number} limit           The largest number to check is prime.
+ * @return {primes}                 An array of all primes under the limit.
  *
  */
 function SieveOfEratosthenes(limit) {
-    // generate prime numbers up to limit
-    // add one because I want array positions to match to numbers
-    var largestPrime = Math.floor(Math.sqrt(limit)) + 1;
-    var sieve = [];
-
-    // populate sieve
+    // define and populate sieve
     // -1 is prime, 0 is not prime, 1 is unknown
-    for (var i = 0; i < largestPrime; i++) {
+    var sieve = [];
+    for (var i = 0; i < limit; i++) {
         sieve[i] = 1;
     }
 
@@ -82,18 +78,18 @@ function SieveOfEratosthenes(limit) {
     sieve[1] = 0;
 
     // start from 2, 1 is not prime
-    for (var i = 2; i + 1 < largestPrime; ) {
+    for (var i = 2; i + 1 < limit; ) {
         // once we find a prime, mark that number as prime and flag all multiples as not prime
         if (IsPrime(i)) {
             sieve[i] = -1;
 
             // flag multiples as not prime
-            for (var j = 2; i * j < largestPrime; j++) {
+            for (var j = 2; i * j < limit; j++) {
                 sieve[i * j] = 0;
             }
 
             // find the next unmarked number
-            while (sieve[i] != 1 && i + 1 < largestPrime) {
+            while (sieve[i] != 1 && i + 1 < limit) {
                 i++;
             }
         }
@@ -102,7 +98,10 @@ function SieveOfEratosthenes(limit) {
     // filter primes
     var primes = [];
 
-    for (var i = 0; i < sieve.length; i++) {
+    // fudge first entry such that nth position = nths prime
+    primes[0] = 0;
+
+    for (var i = 1; i < sieve.length; i++) {
         if (sieve[i] == -1) {
             primes.push(i);
         }
@@ -112,15 +111,77 @@ function SieveOfEratosthenes(limit) {
 }
 
 /**
+ * Return all prime numbers up to the nth term.
+ *
+ * @param {Number} n            The nth prime to find.
+ * @param {Number} sieveSize    Size to extend the sieve each iteration. Default = 100.
+ * @return                      The nth prime number.
+ *
+ */
+function SieveOfEratosthenesNthPrime(n, sieveSize = 100) {
+    // count found primes
+    var primeCount = 0;
+    var primesList = [];
+
+    // define and populate sieve
+    // -1 is prime, 0 is not prime, 1 is unknown
+    var sieve = [];
+    for (var i = 0; i < sieveSize; i++) {
+        sieve[i] = 1;
+    }
+
+    sieve[0] = 0;
+    sieve[1] = 0;
+
+    // start from 2, 0 and 1 are not prime
+    for (var i = 2; i + 1 < sieveSize; ) {
+        // once we find a prime, mark that number as prime and flag all multiples as not prime
+        if (IsPrime(i)) {
+            // add prime to prime list and increase prime count
+            primesList.push(i);
+            primeCount++;
+
+            // if we've reached the nth prime, return it
+            if (primeCount == n) {
+                return i;
+            }
+
+            // flag this value in the sieve as prime
+            sieve[i] = -1;
+
+            // flag multiples as not prime
+            for (var j = 2; i * j < sieveSize; j++) {
+                sieve[i * j] = 0;
+            }
+
+            // find the next unmarked number
+            while (sieve[i] != 1 && i + 1 < sieveSize) {
+                i++;
+            }
+        }
+    }
+
+    // if we've reached this point, we haven't found the nth prime yet
+    // 1. extend the sieve by an amount sieveSive
+    // 2. eliminate all existing primes
+    // 3 .continue with sieve
+
+    return 0;
+}
+
+/**
  * Calculate all prime factors of a number.
  *
  * @param  {Number} n           Number to calculate prime factors for.
- * @return {primeFactors}       All prime factors of a number.
+ * @return                      All prime factors of a number.
  *
  */
 function CalculatePrimeFactors(n) {
-    // generate all possible primes to use
-    var primes = SieveOfEratosthenes(n);
+    // calculate what the largest prime factor could be
+    var largestPrime = Math.floor(Math.sqrt(n));
+
+    // generate all possible prime factors
+    var primes = SieveOfEratosthenes(largestPrime);
 
     // hold a list of prime factors
     var primeFactors = [];
@@ -151,5 +212,6 @@ module.exports = {
     GenerateFibonacciUpToValueLimit,
     IsPrime,
     SieveOfEratosthenes,
+    SieveOfEratosthenesNthPrime,
     CalculatePrimeFactors
 };

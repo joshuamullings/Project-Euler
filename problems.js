@@ -35,6 +35,7 @@ function Problem001(limit) {
  *
  * @param {Number} limit        The limit of terms to calculate.
  * @return {Number}             The sum of the even-valued terms.
+ *
  */
 function Problem002(limit) {
     var terms = library.GenerateFibonacciUpToValueLimit(limit);
@@ -75,8 +76,9 @@ function Problem003(n) {
  *
  * Find the largest palindrome made from the product of two 3-digit numbers.
  *
- * @param {Number} digits       Number of digits for each of the numbers
- * @return {String}             The largest palindrome product
+ * @param {Number} digits       Number of digits for each of the numbers.
+ * @return {String}             The largest palindrome product.
+ *
  */
 function Problem004(digits) {
     // calculate number limit
@@ -113,8 +115,9 @@ function Problem004(digits) {
  *
  * What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
  *
- * @param {Number} range        // Number range from 1 to rage
- * @return                      // Return the smallest postive divisor across 1 - range
+ * @param {Number} range        // Number range from 1 to rage.
+ * @return                      // Return the smallest postive divisor across 1 - range.
+ *
  */
 function Problem005(range) {
     // not found flag
@@ -145,10 +148,61 @@ function Problem005(range) {
     return number - 1;
 }
 
+/**
+ * Problem 6: Sum square difference
+ *
+ * The sum of the squares of the first ten natural numbers is:
+ * 1^2 + 2^2 + ... + 10^2 = 385
+ *
+ * The square of the sum of the first ten natural numbers is:
+ * (1 + 2 + ... + 10)^2 = 55^2 = 3025
+ *
+ * Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is:
+ * 3025 - 385 = 2640
+ *
+ * Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
+ *
+ * @param {Number} n            // How many natural numbers to calculate.
+ * @return                      // Difference between the sum of the squares and the square of the sum of n.
+ *
+ */
+function Problem006(n) {
+    var sumOfTheSquares = 0;
+    var sum = 0;
+
+    for (var i = 1; i <= n; i++) {
+        sumOfTheSquares += Math.pow(i, 2);
+        sum += i;
+    }
+
+    var squareOfTheSum = Math.pow(sum, 2);
+
+    return squareOfTheSum - sumOfTheSquares;
+
+    // There MUST be a nice efficient way of doing this, instead of this mess. To do: Fix.
+}
+
+/**
+ * Problem 7: 10,001st prime
+ *
+ * By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.
+ *
+ * What is the 10,001st prime number?
+ *
+ * @param {Number} n            // nth prime.
+ * @return                      // The nth prime number.
+ *
+ */
+function Problem007(n) {
+    return library.NthPrimeNumber(6);
+}
+
 module.exports = {
     Problem001,
     Problem002,
     Problem003,
     Problem004,
-    Problem005
+    Problem005,
+    Problem006,
+    Problem007
 };
