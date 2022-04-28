@@ -194,7 +194,7 @@ function Problem006(n) {
  *
  */
 function Problem007(n) {
-    return library.NthPrimeNumber(6);
+    return library.SieveOfEratosthenesNthPrime(n);
 }
 
 module.exports = {

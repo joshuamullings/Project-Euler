@@ -50,6 +50,7 @@ function GenerateFibonacciUpToValueLimit(limit) {
  *
  */
 function IsPrime(n) {
+    if (n == 0 || n == 1) return false;
     for (var i = Math.floor(Math.sqrt(n)); i > 1; i--) {
         if (n % i == 0) {
             return false;
@@ -118,25 +119,47 @@ function SieveOfEratosthenes(limit) {
  * @return                      The nth prime number.
  *
  */
-function SieveOfEratosthenesNthPrime(n, sieveSize = 100) {
-    // count found primes
-    var primeCount = 0;
-    var primesList = [];
+function SieveOfEratosthenesNthPrime(n, sieveSize = 20, iterations = 0, previousPrimesList = null, previousPrimeCount = 0) {
+    if (iterations == 0) {
+        // track prime count and found primes
+        var primeCount = 0;
+        var primesList = [];
 
-    // define and populate sieve
-    // -1 is prime, 0 is not prime, 1 is unknown
-    var sieve = [];
-    for (var i = 0; i < sieveSize; i++) {
-        sieve[i] = 1;
+        // define and populate sieve, 1 bigger on the first pass to account for the fact array indicies start at 0
+        // -1 is prime, 0 is not prime, 1 is unknown
+        var sieve = [];
+        for (var i = 0; i < sieveSize + 1; i++) sieve[i] = 1;
+
+        sieve[0] = 0; // 0 not prime
+        sieve[1] = 0; // 1 is not prime
+    } else {
+        // track prime count and found primes
+        var primeCount = previousPrimeCount;
+        var primesList = previousPrimesList;
+
+        // define and populate sieve
+        // -1 is prime, 0 is not prime, 1 is unknown
+        var sieve = [];
+        for (var i = 0; i < sieveSize; i++) sieve[i] = 1;
+
+        // mark all multiples of found primes as non prime
+        for (var i = 0; i < primesList.length; i++) {
+            for (var j = 0; j < sieveSize; j++) {
+                if ((1 + j + sieveSize * iterations) % primesList[i] == 0) sieve[j] = 0;
+            }
+        }
     }
 
-    sieve[0] = 0;
-    sieve[1] = 0;
+    // 2nd order sieve correct
+    // need to make the below skip ahead to the first unknown
+    // account for the fact the first time through this may not be the same
 
-    // start from 2, 0 and 1 are not prime
-    for (var i = 2; i + 1 < sieveSize; ) {
-        // once we find a prime, mark that number as prime and flag all multiples as not prime
-        if (IsPrime(i)) {
+    for (var i = 0; i < sieveSize; ) {
+        // if the number we're checking is prime
+        if (IsPrime(i + sieveSize * iterations)) {
+            // mark this value as prime
+            sieve[i] = -1;
+
             // add prime to prime list and increase prime count
             primesList.push(i);
             primeCount++;
@@ -144,29 +167,25 @@ function SieveOfEratosthenesNthPrime(n, sieveSize = 100) {
             // if we've reached the nth prime, return it
             if (primeCount == n) {
                 return i;
-            }
+            } else {
+                // mark all multiples in the sieve as not prime
+                for (var j = 2; i * j < sieveSize + 1; j++) sieve[i * j] = 0;
 
-            // flag this value in the sieve as prime
-            sieve[i] = -1;
-
-            // flag multiples as not prime
-            for (var j = 2; i * j < sieveSize; j++) {
-                sieve[i * j] = 0;
+                // find the next unmarked number
+                while (sieve[i] != 1 && i < sieveSize) {
+                    i++;
+                }
             }
+        } else {
+            // mark this value as not prime
+            sieve[i] = 0;
 
-            // find the next unmarked number
-            while (sieve[i] != 1 && i + 1 < sieveSize) {
-                i++;
-            }
+            // skip to the next number
+            i++;
         }
     }
 
-    // if we've reached this point, we haven't found the nth prime yet
-    // 1. extend the sieve by an amount sieveSive
-    // 2. eliminate all existing primes
-    // 3 .continue with sieve
-
-    return 0;
+    SieveOfEratosthenesNthPrime(n, sieveSize, iterations + 1, primesList, primeCount);
 }
 
 /**
@@ -194,6 +213,8 @@ function CalculatePrimeFactors(n) {
             if (n % primes[i] == 0) {
                 // if so, reduce n by the prime
                 n = n / primes[i];
+
+                console.log(n);
 
                 // log which prime it was
                 primeFactors.push(primes[i]);

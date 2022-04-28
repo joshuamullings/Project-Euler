@@ -6,4 +6,4 @@ const problems = require("./problems");
 //console.log(problems.Problem004(3));
 //console.log(problems.Problem005(20));
 //console.log(problems.Problem006(100));
-console.log(problems.Problem007(6));
+console.log(problems.Problem007(20));
