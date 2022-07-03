@@ -10,7 +10,7 @@ const library = require("./library.js");
  * @return {Number}             The sum of all multiples.
  *
  */
-function Problem001(limit) {
+function problem001(limit) {
     var sum = 0;
 
     for (var i = 0; i < limit; i++) {
@@ -37,8 +37,8 @@ function Problem001(limit) {
  * @return {Number}             The sum of the even-valued terms.
  *
  */
-function Problem002(limit) {
-    var terms = library.GenerateFibonacciUpToValueLimit(limit);
+function problem002(limit) {
+    var terms = library.generateFibonacciUpToValueLimit(limit);
     var sum = 0;
 
     terms.forEach((element) => {
@@ -61,9 +61,9 @@ function Problem002(limit) {
  * @return {Number}         The largest prime factor of n.
  *
  */
-function Problem003(n) {
+function problem003(n) {
     // get all prime factors of n
-    var primeFactors = library.CalculatePrimeFactors(n);
+    var primeFactors = library.calculatePrimeFactors(n);
 
     // return just the largest
     return primeFactors[primeFactors.length - 1];
@@ -80,7 +80,7 @@ function Problem003(n) {
  * @return {String}             The largest palindrome product.
  *
  */
-function Problem004(digits) {
+function problem004(digits) {
     // calculate number limit
     var digitLimit = Math.pow(10, digits);
 
@@ -116,10 +116,10 @@ function Problem004(digits) {
  * What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
  *
  * @param {Number} range        // Number range from 1 to rage.
- * @return                      // Return the smallest postive divisor across 1 - range.
+ * @return {Number}             // Return the smallest postive divisor across 1 - range.
  *
  */
-function Problem005(range) {
+function problem005(range) {
     // not found flag
     var notFound = true;
 
@@ -163,10 +163,10 @@ function Problem005(range) {
  * Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
  *
  * @param {Number} n            // How many natural numbers to calculate.
- * @return                      // Difference between the sum of the squares and the square of the sum of n.
+ * @return {Number}             // Difference between the sum of the squares and the square of the sum of n.
  *
  */
-function Problem006(n) {
+function problem006(n) {
     var sumOfTheSquares = 0;
     var sum = 0;
 
@@ -189,20 +189,57 @@ function Problem006(n) {
  *
  * What is the 10,001st prime number?
  *
- * @param {Number} n            // nth prime.
- * @return                      // The nth prime number.
+ * @param {Number} n            // The nth prime to return.
+ * @return {Number}             // The nth prime number.
  *
  */
-function Problem007(n) {
-    return library.SieveOfEratosthenesNthPrime(n);
+function problem007(n) {
+    return library.sieveOfEratosthenesNthPrime(n);
+}
+
+/**
+ * Problem 8:
+ *
+ * The four adjacent digits in the 1000-digit number that have the greatest product are 9 × 9 × 8 × 9 = 5832.
+ *
+ * 73167176531330624919225119674426574742355349194934
+ * 96983520312774506326239578318016984801869478851843
+ * 85861560789112949495459501737958331952853208805511
+ * 12540698747158523863050715693290963295227443043557
+ * 66896648950445244523161731856403098711121722383113
+ * 62229893423380308135336276614282806444486645238749
+ * 30358907296290491560440772390713810515859307960866
+ * 70172427121883998797908792274921901699720888093776
+ * 65727333001053367881220235421809751254540594752243
+ * 52584907711670556013604839586446706324415722155397
+ * 53697817977846174064955149290862569321978468622482
+ * 83972241375657056057490261407972968652414535100474
+ * 82166370484403199890008895243450658541227588666881
+ * 16427171479924442928230863465674813919123162824586
+ * 17866458359124566529476545682848912883142607690042
+ * 24219022671055626321111109370544217506941658960408
+ * 07198403850962455444362981230987879927244284909188
+ * 84580156166097919133875499200524063689912560717606
+ * 05886116467109405077541002256983155200055935729725
+ * 71636269561882670428252483600823257530420752963450
+ *
+ * Find the thirteen adjacent digits in the 1000-digit number that have the greatest product. What is the value of this product?
+ *
+ * @param {Number} length                   // The length of adjacent digits to check.
+ * @return {Number}                         // The largest product of the adjacent digits.
+ *
+ */
+function problem008(length) {
+    return library.checkAdjacentDigits(length);
 }
 
 module.exports = {
-    Problem001,
-    Problem002,
-    Problem003,
-    Problem004,
-    Problem005,
-    Problem006,
-    Problem007
+    problem001,
+    problem002,
+    problem003,
+    problem004,
+    problem005,
+    problem006,
+    problem007,
+    problem008,
 };
